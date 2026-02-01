@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 6px solid #ff5e8e;
+            animation: pulse 3s infinite alternate;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: #ff5e8e;
+            font-size: clamp(2rem, 7vw, 2.8rem);
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 0px #ffe0e9;
+            line-height: 1.2;
+            padding: 0 0.5rem;
+        }
+        
+        .message {
+            font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+            color: #ff3385;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            padding: 0 0.5rem;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding: 0.5rem;
+            min-height: 100px;
+            position: relative;
+        }
+        
+        .btn {
+            padding: clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 6vw, 2rem);
+            font-size: clamp(1.3rem, 4.5vw, 1.6rem);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .yes-btn {
+            background: linear-gradient(to right, #ff5e8e, #ff3385);
+            color: white;
+            border: 3px solid #ff5e8e;
+        }
+        
+        .yes-btn:active {
+            transform: scale(0.95);
+            background: linear-gradient(to right, #ff3385, #ff0066);
+        }
+        
+        .no-btn {
+            background: linear-gradient(to right, #6a89cc, #4a69bd);
+            color: white;
+            border: 3px solid #6a89cc;
+            position: relative;
+            transition: none;
+        }
+        
+        .no-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .response-message {
+            background: linear-gradient(145deg, #ffe0e9, #ffc3d5);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            border: 4px solid #ff5e8e;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .response-message h2 {
+            color: #ff3385;
+            font-size: clamp(1.6rem, 5vw, 2rem);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .response-message p {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            color: #ff5e8e;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: clamp(16px, 4vw, 24px);
+            color: #ff5e8e;
+            z-index: 1;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.995);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: calc(100% - 2rem);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            z-index: 5;
+            padding: 0.5rem;
+        }
+        
+        /* Mobile-specific optimizations */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+                border-width: 4px;
+            }
+            
+            .buttons-container {
+                gap: 0.8rem;
+                min-height: 80px;
+            }
+            
+            .btn {
+                min-width: 100px;
+                padding: 0.7rem 1.2rem;
+            }
+            
+            .response-message {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                margin-bottom: 0.8rem;
+            }
+            
+            .message {
+                margin-bottom: 1rem;
+            }
+            
+            .buttons-container {
+                margin-top: 1rem;
+            }
+        }
+        
+        /* Landscape orientation */
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .container {
+                padding: 0.8rem;
+                max-width: 90%;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .buttons-container {
+                flex-direction: row;
+                min-height: 60px;
+                margin-top: 0.8rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 1.2rem;
+                min-width: 90px;
+            }
+        }
+        
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .heart, .container, .response-message {
+                animation: none !important;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .container {
+                border: 3px solid black;
+            }
+            
+            .yes-btn, .no-btn {
+                border: 2px solid black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="hearts-container"></div>
+    
+    <div class="container">
+        <h1>Will You Be My Valentine?</h1>
+        
+        <div class="message">
+            <i class="fas fa-heart" style="color: #ff5e8e;"></i> 
+            You mean everything to me! 
+            <i class="fas fa-heart" style="color: #ff5e8e;"></i>
+        </div>
+        
+        <div class="buttons-container" id="buttons-container">
+            <button class="btn yes-btn" id="yes-btn">YES</button>
+            <button class="btn no-btn" id="no-btn">NO</button>
+        </div>
+        
+        <div class="response-message hidden" id="response-message">
+            <h2>I knew you would say YES! <i class="fas fa-heart" style="color: #ff3385;"></i></h2>
+            <p>You've made me the happiest person! 💖</p>
+            <p>I'll meet you tomorrow with lots of love! 💕</p>
+            <p>Can't wait to celebrate together! 🥰</p>
+            <div style="margin-top: 1rem; font-size: clamp(2.5rem, 8vw, 3.5rem); color: #ff5e8e;">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Made with <i class="fas fa-heart" style="color: #ff5e8e;"></i> for you
+    </div>
+
+    <script>
+        // Mobile-optimized JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const heartsContainer = document.getElementById('hearts-container');
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const buttonsContainer = document.getElementById('buttons-container');
+            const responseMessage = document.getElementById('response-message');
+            
+            const heartColors = ['#ff5e8e', '#ff3385', '#ff80ab', '#ffb6c1'];
+            
+            // Optimized heart creation for mobile
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // Mobile-optimized random properties
+                const size = Math.random() * 20 + 12;
+                const color = heartColors[Math.floor(Math.random() * heartColors.length)];
+                const left = Math.random() * 100;
+                const duration = Math.random() * 8 + 8;
+                
+                heart.style.left = `${left}vw`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.color = color;
+                heart.style.animation = `float ${duration}s linear forwards`;
+                
+                heartsContainer.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, duration * 1000);
+            }
+            
+            // Create initial hearts (fewer for mobile performance)
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => createHeart(), i * 300);
+            }
+            
+            // Throttle heart creation for mobile
+            let lastHeartTime = 0;
+            const heartInterval = setInterval(() => {
+                const now = Date.now();
+                if (now - lastHeartTime > 800) {
+                    createHeart();
+                    lastHeartTime = now;
+                }
+            }, 800);
+            
+            // Mobile-optimized button movement
+            function moveNoButton() {
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                const btnRect = noBtn.getBoundingClientRect();
+                
+                // Calculate safe movement area
+                const maxX = containerRect.width - btnRect.width - 10;
+                const maxY = containerRect.height - btnRect.height - 10;
+                
+                // Ensure we don't go out of bounds
+                const safeX = Math.max(10, Math.min(maxX, Math.random() * maxX));
+                const safeY = Math.max(10, Math.min(maxY, Math.random() * maxY));
+                
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = `${safeX}px`;
+                noBtn.style.top = `${safeY}px`;
+                
+                // Add visual feedback
+                noBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    noBtn.style.transform = 'scale(1)';
+                }, 150);
+            }
+            
+            // Touch events for mobile
+            let touchStartTime;
+            
+            noBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                touchStartTime = Date.now();
+                moveNoButton();
+                
+                // Haptic feedback if available
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(50);
+                }
+            });
+            
+            noBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                // If touch was very brief, move again (quick tap)
+                if (Date.now() - touchStartTime < 200) {
+                    setTimeout(moveNoButton, 100);
+                }
+            });
+            
+            // Mouse events for desktop compatibility
+            noBtn.addEventListener('mouseover', moveNoButton);
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Yes button with touch feedback
+            yesBtn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            yesBtn.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+                handleYesClick();
+            });
+            
+            yesBtn.addEventListener('click', handleYesClick);
+            
+            function handleYesClick() {
+                // Hide buttons and show response
+                buttonsContainer.classList.add('hidden');
+                responseMessage.classList.remove('hidden');
+                
+                // Clear heart interval
+                clearInterval(heartInterval);
+                
+                // Celebration effect
+                let celebrationCount = 0;
+                const celebrationInterval = setInterval(() => {
+                    createCelebrationHeart();
+                    celebrationCount++;
+                    
+                    if (celebrationCount >= 20) {
+                        clearInterval(celebrationInterval);
+                    }
+                }, 100);
+                
+                // Scroll to response on mobile
+                responseMessage.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }
+            
+            function createCelebrationHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                const size = Math.random() * 30 + 15;
+                const color = heartColors[Math.floor(Math.random() * heartColors.length)];
+                const left = Math.random() * 100;
+                
+                heart.style.left = `${left}vw`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.color = color;
+                heart.style.animation = `float 2.5s linear forwards`;
+                heart.style.zIndex = '20';
+                
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, 2500);
+            }
+            
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Handle orientation change
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Reset button position on resize
+                    noBtn.style.position = '';
+                    noBtn.style.left = '';
+                    noBtn.style.top = '';
+                }, 250);
+            });
+        });
+    </script>
+</body>
+</html>
